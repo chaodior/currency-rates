@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="新加坡、香港银行美金定存利率查询">
+    <meta name="keywords" content="新加坡, 香港, 美金，定存利率，渣打银行，汇丰银行，花旗银行，星展银行，中银香港，工银亚洲，银行开户">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>银行美金定存利率查询</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --md-sys-color-primary: #006495;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #cce5ff;
+            --md-sys-color-on-primary-container: #001e31;
+            --md-sys-color-surface: #fafcff;
+            --md-sys-color-on-surface: #001f2a;
+            --md-sys-color-surface-variant: #dde3ea;
+            --md-sys-color-on-surface-variant: #41474d;
+            --md-sys-color-outline: #70787f;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            margin: 0;
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--md-sys-color-on-surface);
+            text-align: center;
+            font-weight: 400;
+            font-size: 2.5rem;
+            margin-bottom: 32px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+            background-color: var(--md-sys-color-surface);
+            border-radius: 12px;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+            padding: 4px;
+            border: 1px solid var(--md-sys-color-outline);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background-color: transparent;
+            color: var(--md-sys-color-on-surface-variant);
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+            border-radius: 8px;
+            margin: 0 4px;
+        }
+
+        .tab:hover {
+            background-color: var(--md-sys-color-surface-variant);
+        }
+
+        .tab.active {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        .bookmark-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .bookmark-item {
+            background-color: var(--md-sys-color-surface);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+            transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            border: 1px solid var(--md-sys-color-outline);
+        }
+
+        .bookmark-item:hover {
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+        }
+
+        .bookmark-content {
+            padding: 16px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .bookmark-item h2 {
+            margin: 0;
+            color: var(--md-sys-color-on-surface);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5rem;
+        }
+
+        .bookmark-item p {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            margin: 4px 0 0;
+        }
+
+        .favicon {
+            width: 40px;
+            height: 40px;
+            margin-right: 16px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-surface-variant);
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .bookmark-text {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>我的银行网站收藏</h1>
+        <div class="tabs">
+            <button class="tab active" data-region="all">全部</button>
+            <button class="tab" data-region="singapore">新加坡</button>
+            <button class="tab" data-region="hongkong">香港</button>
+            <button class="tab" data-region="china">中国</button>
+        </div>
+        <div class="bookmark-grid" id="bookmarkGrid"></div>
+    </div>
+
+    <script>
+        const bookmarks = [
+            {
+                name: "新加坡星展银行",
+                description: "外币定期存款利率",
+                url: "https://www.dbs.com.sg/personal/rates-online/foreign-currency-fixed-deposits.page",
+                favicon: "https://www.dbs.com.sg/favicon.ico",
+                region: "singapore"
+            },
+            {
+                name: "新加坡华侨银行",
+                description: "存款利率信息",
+                url: "https://www.ocbc.com/personal-banking/deposits/interest-rates",
+                favicon: "https://www.ocbc.com/favicon.ico",
+                region: "singapore"
+            },
+            {
+                name: "新加坡大华银行",
+                description: "外币定期存款利率",
+                url: "https://www.uob.com.sg/online-rates/foreign-currency-fixed-deposits.page",
+                favicon: "https://www.uob.com.sg/favicon.ico",
+                region: "singapore"
+            },
+            {
+                name: "新加坡汇丰银行",
+                description: "外币定期存款介绍",
+                url: "https://www.hsbc.com.sg/zh-sg/accounts/products/foreign-currency-time-deposit/",
+                favicon: "https://www.hsbc.com.sg/favicon.ico",
+                region: "singapore"
+            },
+            {
+                name: "新加坡渣打银行",
+                description: "外币利率常见问题",
+                url: "https://www.sc.com/sg/help/faqs/foreign-currency-interest-rates/",
+                favicon: "https://www.sc.com/favicon.ico",
+                region: "singapore"
+            },
+            {
+                name: "香港汇丰银行",
+                description: "存款利率",
+                url: "https://www.hsbc.com.hk/zh-hk/accounts/offers/time-deposit/",
+                favicon: "https://www.hsbc.com.hk/favicon.ico",
+                region: "hongkong"
+            },
+            {
+                name: "中国工商银行",
+                description: "个人存款利率",
+                url: "http://www.icbc.com.cn/ICBC/金融信息/存款利率/个人存款利率/",
+                favicon: "http://www.icbc.com.cn/favicon.ico",
+                region: "china"
+            }
+        ];
+
+        function renderBookmarks(region = 'all') {
+            const grid = document.getElementById('bookmarkGrid');
+            grid.innerHTML = '';
+            bookmarks.forEach(bookmark => {
+                if (region === 'all' || bookmark.region === region) {
+                    const item = document.createElement('div');
+                    item.className = 'bookmark-item';
+                    item.onclick = () => window.open(bookmark.url, '_blank');
+                    item.innerHTML = `
+                        <div class="bookmark-content">
+                            <img src="${bookmark.favicon}" alt="${bookmark.name}" class="favicon">
+                            <div class="bookmark-text">
+                                <h2>${bookmark.name}</h2>
+                                <p>${bookmark.description}</p>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(item);
+                }
+            });
+        }
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelector('.tab.active').classList.remove('active');
+                e.target.classList.add('active');
+                renderBookmarks(e.target.dataset.region);
+            });
+        });
+
+        renderBookmarks();
+    </script>
+</body>
+</html>
